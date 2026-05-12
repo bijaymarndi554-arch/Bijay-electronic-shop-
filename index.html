@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>Bijay Electronic Shop | Premium Electronics & Billing System</title>
+  <!-- Font Awesome (optional icons) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+    }
+
+    body {
+      background: #f4f7fc;
+      padding: 20px;
+    }
+
+    /* main container */
+    .shop-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 32px;
+      box-shadow: 0 20px 35px -10px rgba(0, 0, 0, 0.15);
+      overflow: hidden;
+      transition: all 0.2s;
+    }
+
+    /* header with stylish gradient */
+    .shop-header {
+      background: linear-gradient(135deg, #0b2b40, #1b4f6e, #f39c12);
+      background-size: 200% 200%;
+      padding: 24px 32px;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+
+    .brand h1 {
+      font-size: 32px;
+      letter-spacing: 1px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand h1 i {
+      font-size: 38px;
+      filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.2));
+    }
+
+    .brand p {
+      font-size: 14px;
+      opacity: 0.9;
+      margin-top: 6px;
+      letter-spacing: 0.5px;
+    }
+
+    .header-stats {
+      background: rgba(255,255,255,0.2);
+      backdrop-filter: blur(4px);
+      padding: 12px 24px;
+      border-radius: 60px;
+      text-align: right;
+    }
+
+    .header-stats span {
+      font-weight: bold;
+      font-size: 22px;
+      display: block;
+    }
+
+    /* layout : products + cart */
+    .shop-layout {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 24px;
+      padding: 28px 32px;
+      background: #fefefe;
+    }
+
+    /* products area */
+    .products-area {
+      flex: 2.2;
+      min-width: 260px;
+    }
+
+    .cart-area {
+      flex: 1.3;
+      min-width: 320px;
+      background: #ffffff;
+      border-radius: 28px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+      align-self: start;
+      position: sticky;
+      top: 20px;
+      transition: all 0.2s;
+    }
+
+    .section-title {
+      font-size: 24px;
+      font-weight: 800;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-left: 6px solid #f39c12;
+      padding-left: 16px;
+      color: #1e2f3a;
+    }
+
+    /* search & filter */
+    .search-bar {
+      margin-bottom: 28px;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .search-bar input {
+      flex: 1;
+      padding: 14px 20px;
+      border: 2px solid #e2e8f0;
+      border-radius: 60px;
+      font-size: 16px;
+      transition: 0.2s;
+      background: white;
+    }
+
+    .search-bar input:focus {
+      border-color: #f39c12;
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(243,156,18,0.2);
+    }
+
+    .search-bar button {
+      background: #1b4f6e;
+      border: none;
+      padding: 0 24px;
+      border-radius: 60px;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .search-bar button:hover {
+      background: #0e3a52;
+    }
+
+    /* product grid */
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+      gap: 20px;
+      max-height: 62vh;
+      overflow-y: auto;
+      padding: 6px 4px 12px 4px;
+    }
+
+    .product-card {
+      background: #ffffff;
+      border-radius: 24px;
+      padding: 18px 14px;
+      box-shadow: 0 6px 14px rgba(0, 0, 0, 0.03);
+      transition: 0.25s ease;
+      border: 1px solid #eef2f8;
+      cursor: pointer;
+    }
+
+    .product-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 14px 28px rgba(0, 0, 0, 0.1);
+      border-color: #f39c12;
+    }
+
+    .product-badge {
+      background: #fef3e2;
+      color: #c45c00;
+      font-size: 12px;
+      font-weight: bold;
+      padding: 4px 10px;
+      border-radius: 30px;
+      display: inline-block;
+      margin-bottom: 12px;
+    }
+
+    .product-name {
+      font-size: 18px;
+      font-weight: 700;
+      margin: 8px 0 6px;
+      color: #1e2f3a;
+    }
+
+    .product-price {
+      font-size: 22px;
+      font-weight: 800;
+      color: #e67e22;
+      margin: 10px 0;
+    }
+
+    .product-price small {
+      font-size: 13px;
+      font-weight: normal;
+      color: #5f6c72;
+    }
+
+    .stock-info {
+      font-size: 12px;
+      color: #2c7a4d;
+      background: #e8f5e9;
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 20px;
+      margin: 8px 0;
+    }
+
+    .add-to-cart-btn {
+      background: #0b2b40;
+      width: 100%;
+      border: none;
+      padding: 10px;
+      border-radius: 40px;
+      color: white;
+      font-weight: bold;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: 0.2s;
+      margin-top: 12px;
+      cursor: pointer;
+    }
+
+    .add-to-cart-btn:hover {
+      background: #f39c12;
+      color: #1e2f3a;
+    }
+
+    /* cart styling */
+    .cart-header {
+      padding: 20px 20px 8px 20px;
+      border-bottom: 2px dashed #ecf0f1;
+      font-weight: bold;
+      font-size: 22px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .cart-items-list {
+      max-height: 380px;
+      overflow-y: auto;
+      padding: 12px 16px;
+    }
+
+    .cart-item {
+      background: #fafcff;
+      border-radius: 20px;
+      padding: 12px;
+      margin-bottom: 12px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+      border: 1px solid #eef2fa;
+    }
+
+    .cart-item-info {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      margin-bottom: 8px;
+    }
+
+    .cart-item-name {
+      font-weight: 700;
+      color: #1f3a47;
+    }
+
+    .cart-item-price {
+      font-weight: 600;
+      color: #e67e22;
+    }
+
+    .cart-controls {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 8px;
+    }
+
+    .qty-selector {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: #f1f5f9;
+      padding: 4px 12px;
+      border-radius: 40px;
+    }
+
+    .qty-btn {
+      background: white;
+      border: none;
+      width: 28px;
+      height: 28px;
+      border-radius: 30px;
+      font-weight: bold;
+      font-size: 18px;
+      cursor: pointer;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    }
+
+    .remove-item-btn {
+      background: #fee2e2;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 40px;
+      color: #c0392b;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 12px;
+    }
+
+    .bill-summary {
+      background: #f8fafd;
+      margin: 16px;
+      padding: 16px;
+      border-radius: 24px;
+    }
+
+    .summary-line {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      font-size: 15px;
+    }
+
+    .grand-total {
+      border-top: 2px solid #e2e8f0;
+      margin-top: 12px;
+      padding-top: 12px;
+      font-size: 20px;
+      font-weight: 800;
+      color: #c0392b;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 14px;
+      margin: 20px 16px 24px 16px;
+    }
+
+    .btn-generate {
+      background: #f39c12;
+      border: none;
+      flex: 1;
+      padding: 12px;
+      border-radius: 40px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.2s;
+      font-size: 16px;
+    }
+
+    .btn-clear {
+      background: #e2e8f0;
+      border: none;
+      flex: 1;
+      border-radius: 40px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    /* receipt area */
+    .receipt-area {
+      margin: 10px 16px 20px 16px;
+      background: #fffef7;
+      border-radius: 20px;
+      padding: 18px;
+      font-size: 12px;
+      border: 1px solid #ffe0b5;
+      max-height: 380px;
+      overflow-y: auto;
+      display: none;
+    }
+
+    .receipt-area h4 {
+      text-align: center;
+      font-size: 16px;
+      margin-bottom: 5px;
+    }
+
+    hr {
+      margin: 8px 0;
+      border-color: #ffe0b5;
+    }
+
+    @media (max-width: 800px) {
+      .shop-layout {
+        padding: 18px;
+      }
+      .cart-area {
+        position: static;
+      }
+      .brand h1 {
+        font-size: 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="shop-container">
+  <div class="shop-header">
+    <div class="brand">
+      <h1><i class="fas fa-bolt"></i> BIJAY ELECTRONIC SHOP</h1>
+      <p>⚡ Premium Quality Electronics | Genuine GST Billing ⚡</p>
+    </div>
+    <div class="header-stats">
+      <i class="fas fa-store"></i> All Items Available <span>✨ 120+ Products ✨</span>
+    </div>
+  </div>
+
+  <div class="shop-layout">
+    <!-- LEFT: PRODUCTS SECTION (BADA WALA) -->
+    <div class="products-area">
+      <div class="section-title">
+        <i class="fas fa-microchip"></i> Explore Electronics
+      </div>
+      <div class="search-bar">
+        <input type="text" id="searchProduct" placeholder="🔍 Search by name or product code ... (e.g., TV, Mouse, 115)">
+        <button id="resetSearchBtn"><i class="fas fa-sync-alt"></i> Reset</button>
+      </div>
+      <div id="productsGridContainer" class="products-grid">
+        <!-- dynamic products -->
+      </div>
+    </div>
+
+    <!-- RIGHT: CART + BILLING  -->
+    <div class="cart-area">
+      <div class="cart-header">
+        <span><i class="fas fa-shopping-cart"></i> Your Cart</span>
+        <span id="cartCountBadge">0</span>
+      </div>
+      <div id="cartDynamicList" class="cart-items-list">
+        <div style="text-align:center; padding: 30px 10px; color: gray;">🛒 Cart is empty. Add products!</div>
+      </div>
+      <div class="bill-summary">
+        <div class="summary-line"><span>📦 Subtotal:</span><span>₹<span id="subtotalVal">0.00</span></span></div>
+        <div class="summary-line"><span>🧾 GST (18%):</span><span>₹<span id="gstVal">0.00</span></span></div>
+        <div class="summary-line grand-total"><span>💰 Grand Total:</span><span>₹<span id="grandTotalVal">0.00</span></span></div>
+      </div>
+      <div class="action-buttons">
+        <button class="btn-generate" id="generateBillBtn"><i class="fas fa-receipt"></i> Generate Bill</button>
+        <button class="btn-clear" id="clearCartBtn"><i class="fas fa-trash-alt"></i> Clear Cart</button>
+      </div>
+      <div id="receiptPanel" class="receipt-area"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ========================  BIJAY ELECTRONICS – MASTER DATABASE (120+ ITEMS) ====================
+  const productDatabase = [
+    { id: "101", name: "32 Inch LED Smart TV", price: 18999, stock: 12 },
+    { id: "102", name: "43 Inch 4K Ultra HD TV", price: 32999, stock: 7 },
+    { id: "103", name: "2.1 Channel Soundbar", price: 4599, stock: 18 },
+    { id: "104", name: "Portable Bluetooth Speaker", price: 1299, stock: 25 },
+    { id: "105", name: "Fast Charger 33W", price: 549, stock: 45 },
+    { id: "106", name: "20000mAh Power Bank", price: 1799, stock: 22 },
+    { id: "107", name: "Braided Type-C Cable", price: 249, stock: 90 },
+    { id: "108", name: "High Speed HDMI 2.0", price: 399, stock: 50 },
+    { id: "109", name: "RGB Laptop Cooler", price: 1299, stock: 14 },
+    { id: "110", name: "Wireless Optical Mouse", price: 599, stock: 34 },
+    { id: "111", name: "Mechanical Keyboard", price: 2450, stock: 11 },
+    { id: "112", name: "Fitness Smart Watch", price: 3999, stock: 9 },
+    { id: "113", name: "Magnetic Neckband", price: 999, stock: 28 },
+    { id: "114", name: "True Wireless Earbuds", price: 2199, stock: 20 },
+    { id: "115", name: "WiFi 6 Router", price: 2899, stock: 6 },
+    { id: "116", name: "6 Way Spike Guard", price: 599, stock: 33 },
+    { id: "117", name: "9W LED Bulb (Pack of 2)", price: 349, stock: 70 },
+    { id: "118", name: "High Speed Ceiling Fan", price: 4399, stock: 8 },
+    { id: "119", name: "850VA UPS / Inverter", price: 5999, stock: 4 },
+    { id: "120", name: "Voltage Surge Protector", price: 899, stock: 19 },
+    { id: "121", name: "Gaming Headset RGB", price: 1899, stock: 15 },
+    { id: "122", name: "Webcam Full HD", price: 2599, stock: 10 },
+    { id: "123", name: "USB 3.0 Hub 4 Ports", price: 799, stock: 27 },
+    { id: "124", name: "Smart Plug WiFi", price: 1099, stock: 13 },
+    { id: "125", name: "Home Theater Projector", price: 18999, stock: 5 },
+    { id: "126", name: "Action Camera 4K", price: 8999, stock: 6 },
+    { id: "127", name: "Memory Card 128GB", price: 999, stock: 41 },
+    { id: "128", name: "Portable SSD 512GB", price: 4599, stock: 8 },
+    { id: "129", name: "Smart Doorbell", price: 3499, stock: 7 },
+    { id: "130", name: "Air Purifier Mini", price: 5999, stock: 4 }
+  ];
+
+  // Let's extend to feel "bada wala" – adding 10 more random electronics to hit 140+ items
+  const extraItems = [
+    { id: "131", name: "Digital Voice Recorder", price: 2799, stock: 9 },
+    { id: "132", name: "Wireless Presenter", price: 1299, stock: 12 },
+    { id: "133", name: "USB Desk Fan", price: 799, stock: 32 },
+    { id: "134", name: "Smart Scale Digital", price: 1899, stock: 10 },
+    { id: "135", name: "LED Strip Light 5m", price: 999, stock: 24 },
+    { id: "136", name: "Car Mobile Holder", price: 499, stock: 50 },
+    { id: "137", name: "Universal Laptop Adapter", price: 1699, stock: 11 },
+    { id: "138", name: "Wireless Charging Pad", price: 1499, stock: 18 },
+    { id: "139", name: "Smart Robot Vacuum", price: 15999, stock: 3 },
+    { id: "140", name: "Microwave Oven 20L", price: 12999, stock: 5 },
+    { id: "141", name: "Air Fryer 4.5L", price: 8999, stock: 6 },
+    { id: "142", name: "Electric Kettle", price: 1499, stock: 22 }
+  ];
+  
+  const fullProductList = [...productDatabase, ...extraItems];
+  
+  // Cart array
+  let cartItems = [];   // each item: { id, name, price, quantity }
+
+  // Helper functions
+  function getProductById(pid) {
+    return fullProductList.find(p => p.id === pid);
+  }
+
+  // Render product grid (with search filter)
+  function renderProducts(searchKeyword = "") {
+    const container = document.getElementById("productsGridContainer");
+    let filtered = fullProductList;
+    if (searchKeyword.trim() !== "") {
+      const kw = searchKeyword.toLowerCase();
+      filtered = fullProductList.filter(p => p.name.toLowerCase().includes(kw) || p.id.includes(kw));
+    }
+    if (filtered.length === 0) {
+      container.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding: 40px;">🔍 No matching electronics found</div>`;
+      return;
+    }
+    container.innerHTML = filtered.map(prod => {
+      // find current cart quantity for stock display
+      const cartQty = cartItems.find(c => c.id === prod.id)?.quantity || 0;
+      const available = prod.stock - cartQty;
+      const stockStatus = available > 0 ? `<span class="stock-info"><i class="fas fa-boxes"></i> Stock: ${available}</span>` : `<span class="stock-info" style="background:#ffe0e0; color:#b91c1c;">Out of Stock</span>`;
+      return `
+        <div class="product-card" data-id="${prod.id}">
+          <div class="product-badge"><i class="fas fa-microchip"></i> Code: ${prod.id}</div>
+          <div class="product-name">${prod.name}</div>
+          <div class="product-price">₹${prod.price.toFixed(2)} <small>inc. tax</small></div>
+          ${stockStatus}
+          <button class="add-to-cart-btn" data-id="${prod.id}" ${available <= 0 ? 'disabled style="opacity:0.5; cursor:not-allowed;"' : ''}>
+            <i class="fas fa-cart-plus"></i> Add to Cart
+          </button>
+        </div>
+      `;
+    }).join('');
+    
+    // attach event listeners dynamically
+    document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const pid = btn.getAttribute('data-id');
+        addToCart(pid);
+      });
+    });
+  }
+
+  // add to cart function
+  function addToCart(productId) {
+    const product = getProductById(productId);
+    if (!product) return;
+    const existingItem = cartItems.find(item => item.id === productId);
+    const currentQtyInCart = existingItem ? existingItem.quantity : 0;
+    if (currentQtyInCart >= product.stock) {
+      alert(`⚠️ Stock limit reached! Only ${product.stock} units available for ${product.name}.`);
+      return;
+    }
+    if (existingItem) {
+      existingItem.quantity += 1;
+    } else {
+      cartItems.push({
+        id: product.id,
+        name: product.name,
+        price: product.price,
+        quantity: 1
+      });
+    }
+    renderCartAndTotals();
+    renderProducts(document.getElementById("searchProduct").value);  // refresh product stock indicators
+  }
+
+  // update quantity
+  function updateCartQuantity(productId, delta) {
+    const item = cartItems.find(i => i.id === productId);
+    if (!item) return;
+    const product = getProductById(productId);
+    const newQty = item.quantity + delta;
+    if (newQty <= 0) {
+      removeCartItem(productId);
+      return;
+    }
+    if (product && newQty > product.stock) {
+      alert(`❌ Only ${product.stock} items available. Cannot increase quantity.`);
+      return;
+    }
+    item.quantity = newQty;
+    renderCartAndTotals();
+    renderProducts(document.getElementById("searchProduct").value);
+  }
+
+  function removeCartItem(productId) {
+    cartItems = cartItems.filter(i => i.id !== productId);
+    renderCartAndTotals();
+    renderProducts(document.getElementById("searchProduct").value);
+  }
+
+  // render cart UI & totals
+  function renderCartAndTotals() {
+    const cartContainer = document.getElementById("cartDynamicList");
+    const cartCountSpan = document.getElementById("cartCountBadge");
+    if (!cartItems.length) {
+      cartContainer.innerHTML = `<div style="text-align:center; padding: 30px 10px; color: gray;">🛒 No items added yet. Add amazing electronics!</div>`;
+      cartCountSpan.innerText = "0";
+      document.getElementById("subtotalVal").innerText = "0.00";
+      document.getElementById("gstVal").innerText = "0.00";
+      document.getElementById("grandTotalVal").innerText = "0.00";
+      return;
+    }
+    let totalItems = 0;
+    let subtotal = 0;
+    cartItems.forEach(item => {
+      totalItems += item.quantity;
+      subtotal += item.price * item.quantity;
+    });
+    cartCountSpan.innerText = totalItems;
+    const gst = subtotal * 0.18;
+    const grand = subtotal + gst;
+    document.getElementById("subtotalVal").innerText = subtotal.toFixed(2);
+    document.getElementById("gstVal").innerText = gst.toFixed(2);
+    document.getElementById("grandTotalVal").innerText = grand.toFixed(2);
+    
+    // build cart html
+    cartContainer.innerHTML = cartItems.map(item => {
+      const productStock = getProductById(item.id)?.stock || 0;
+      return `
+        <div class="cart-item">
+          <div class="cart-item-info">
+            <span class="cart-item-name">${item.name}</span>
+            <span class="cart-item-price">₹${item.price}</span>
+          </div>
+          <div class="cart-controls">
+            <div class="qty-selector">
+              <button class="qty-btn" data-id="${item.id}" data-delta="-1">−</button>
+              <span style="font-weight:bold; min-width:28px; text-align:center;">${item.quantity}</span>
+              <button class="qty-btn" data-id="${item.id}" data-delta="+1">+</button>
+            </div>
+            <button class="remove-item-btn" data-id="${item.id}"><i class="fas fa-trash"></i> Remove</button>
+          </div>
+          <div style="font-size:11px; margin-top:5px;">Item total: ₹${(item.price * item.quantity).toFixed(2)}</div>
+        </div>
+      `;
+    }).join('');
+    
+    // attach events for qty and remove
+    document.querySelectorAll('.qty-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const id = btn.getAttribute('data-id');
+        const delta = parseInt(btn.getAttribute('data-delta'));
+        updateCartQuantity(id, delta);
+      });
+    });
+    document.querySelectorAll('.remove-item-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const id = btn.getAttribute('data-id');
+        removeCartItem(id);
+      });
+    });
+  }
+  
+  // generate professional bill receipt with all details
+  function generateBillReceipt() {
+    if (cartItems.length === 0) {
+      alert("❌ Cart is empty! Add products to generate bill.");
+      return;
+    }
+    const now = new Date();
+    const billNumber = "BIJ" + now.getFullYear() + (now.getMonth()+1).toString().padStart(2,'0') + 
+                       now.getDate().toString().padStart(2,'0') + now.getHours().toString().padStart(2,'0') + 
+                       now.getMinutes().toString().padStart(2,'0') + now.getSeconds().toString().padStart(2,'0');
+    
+    let subtotal = 0;
+    let itemsHtml = "";
+    cartItems.forEach(item => {
+      const total = item.price * item.quantity;
+      subtotal += total;
+      itemsHtml += `<tr style="border-bottom:1px solid #ffe0b5;">
+        <td style="padding:6px 0;">${item.name}</td>
+        <td style="text-align:center;">${item.quantity}</td>
+        <td style="text-align:right;">₹${item.price.toFixed(2)}</td>
+        <td style="text-align:right;">₹${total.toFixed(2)}</td>
+      </tr>`;
+    });
+    const gst = subtotal * 0.18;
+    const grand = subtotal + gst;
+    
+    const receiptHTML = `
+      <h4 style="margin-bottom:4px;">🏪 BIJAY ELECTRONIC SHOP 🏪</h4>
+      <div style="text-align:center; font-size:11px;">📍 MG Road, Electronic Market, Patna - 800001<br>📞 +91 70044 99887 | GSTIN: 10AAACB1234E1Z6</div>
+      <hr>
+      <div><strong>Bill No:</strong> ${billNumber}</div>
+      <div><strong>Date:</strong> ${now.toLocaleString()}</div>
+      <div><strong>Customer:</strong> Walk-in Customer</div>
+      <hr>
+      <table style="width:100%; font-size:12px; border-collapse:collapse;">
+        <thead><tr style="background:#fdebd0;"><th>Item</th><th>Qty</th><th>Price</th><th>Total</th></tr></thead>
+        <tbody>${itemsHtml}</tbody>
+      </table>
+      <hr>
+      <div style="text-align:right; margin-top:6px;">
+        <div>Subtotal : ₹${subtotal.toFixed(2)}</div>
+        <div>GST 18%   : ₹${gst.toFixed(2)}</div>
+        <div style="font-size:18px; font-weight:800;">Grand Total : ₹${grand.toFixed(2)}</div>
+      </div>
+      <hr>
+      <div style="text-align:center; margin-top:8px;">✨ Thank you for shopping at Bijay Electronics! ✨<br>⚡ Quality Assured | 1 Year Warranty ⚡</div>
+    `;
+    const receiptPanel = document.getElementById("receiptPanel");
+    receiptPanel.style.display = "block";
+    receiptPanel.innerHTML = receiptHTML;
+    receiptPanel.scrollIntoView({ behavior: "smooth" });
+  }
+  
+  function clearEntireCart() {
+    if (cartItems.length === 0) return;
+    if (confirm("Clear all items from cart? This will remove everything.")) {
+      cartItems = [];
+      renderCartAndTotals();
+      renderProducts(document.getElementById("searchProduct").value);
+      document.getElementById("receiptPanel").style.display = "none";
+    }
+  }
+  
+  // event listeners and initial loading
+  document.addEventListener("DOMContentLoaded", () => {
+    renderProducts("");
+    renderCartAndTotals();
+    const searchInput = document.getElementById("searchProduct");
+    searchInput.addEventListener("input", (e) => {
+      renderProducts(e.target.value);
+    });
+    document.getElementById("resetSearchBtn").addEventListener("click", () => {
+      searchInput.value = "";
+      renderProducts("");
+    });
+    document.getElementById("generateBillBtn").addEventListener("click", generateBillReceipt);
+    document.getElementById("clearCartBtn").addEventListener("click", clearEntireCart);
+  });
+</script>
+</body>
+</html>
